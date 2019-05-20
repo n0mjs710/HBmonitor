@@ -117,6 +117,12 @@ def alias_call(_id, _dict):
         return ', '.join(alias)
     else:
         return str(alias)
+def alias_tgid(_id, _dict):
+    alias = get_alias(_id, _dict, 'NAME')
+    if type(alias) == list:
+        return str(alias[0])
+    else:
+	    return str(alias)
 
 # Return friendly elpasted time from time in seconds.
 def since(_time):
@@ -382,7 +388,7 @@ def rts_update(p):
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TYPE'] = callType
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SUB'] = '{} ({})'.format(alias_short(sourceSub, subscriber_ids), sourceSub)
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['SRC'] = peer
-                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = destination
+                CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['DEST'] = '{}'.format(alias_tgid(destination,talkgroup_ids))
             if action == 'END':
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['TS'] = False
                 CTABLE['MASTERS'][system]['PEERS'][peer][timeSlot]['COLOR'] = BLACK
@@ -415,7 +421,7 @@ def rts_update(p):
             CTABLE['PEERS'][system][timeSlot]['TYPE'] = callType
             CTABLE['PEERS'][system][timeSlot]['SUB'] = '{} ({})'.format(alias_short(sourceSub, subscriber_ids), sourceSub)
             CTABLE['PEERS'][system][timeSlot]['SRC'] = sourcePeer
-            CTABLE['PEERS'][system][timeSlot]['DEST'] = destination
+            CTABLE['PEERS'][system][timeSlot]['DEST'] = '{}'.format(alias_tgid(destination,talkgroup_ids))
         if action == 'END':
             CTABLE['PEERS'][system][timeSlot]['TS'] = False
             CTABLE['PEERS'][system][timeSlot]['COLOR'] = BLACK
@@ -459,11 +465,11 @@ def process_message(_message):
         rts_update(p)
         if p[0] == 'GROUP VOICE' and p[2] != 'TX':
             if p[1] == 'END':
-                log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids), p[9])
+                log_message = '{}: {} {}:   SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} {:14.14s} SUB: {:8.8s}; {:30.30s} Time: {}s'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids), p[9])
             elif p[1] == 'START':
-                log_message = '{}: {} {}: SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
+                log_message = '{}: {} {}: SYS: {:12.12s} SRC: {:8.8s}; {:15.15s} TS: {} TGID: {:>5s} {:14.14s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids))
             elif p[1] == 'END WITHOUT MATCHING START':
-                log_message = '{}: {} {} on SYSTEM {:12.12s}: SRC: {:8.8s}; {}:15.15s TS: {} TGID: {:>5s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], p[6], alias_short(int(p[6]), subscriber_ids))
+                log_message = '{}: {} {} on SYSTEM {:12.12s}: SRC: {:8.8s}; {}:15.15s TS: {} TGID: {:>5s} {:14.14s} SUB: {:8.8s}; {:30.30s}'.format(_now, p[0], p[1], p[3], p[5], alias_call(int(p[5]), peer_ids), p[7], p[8], alias_tgid(int(p[8]),talkgroup_ids), p[6], alias_short(int(p[6]), subscriber_ids))
             else:
                 log_message = '{}: UNKNOWN GROUP VOICE LOG MESSAGE'.format(_now)
 
