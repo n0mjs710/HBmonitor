@@ -52,7 +52,7 @@
     
     {% for _peer, _pdata  in _table['PEERS'].iteritems() %}
     <tr>
-        <td style="font-weight:bold" rowspan="2"> {{ _peer}}</td>
+        <td style="font-weight:bold" rowspan="2"> {{ _peer}}<br><span style="font-weight:normal; font: 7pt arial, sans-serif;">Mode: {{ _table['PEERS'][_peer]['MODE'] }}</span></td>
         <td rowspan="2">{{ _table['PEERS'][_peer]['RADIO_ID'] }}, {{_table['PEERS'][_peer]['CALLSIGN']}}, {{_table['PEERS'][_peer]['LOCATION']}}<br><div style="font: 8pt arial, sans-serif">Master: {{ _table['PEERS'][_peer]['MASTER_IP'] }}:{{ _table['PEERS'][_peer]['MASTER_PORT'] }}</div></td>
         <td rowspan="2"; style={{ 'background-color:#00ff00' if _table['PEERS'][_peer]['STATS']['CONNECTION'] == 'YES' else ';background-color:#ff0000' }}>{{ _table['PEERS'][_peer]['STATS']['CONNECTED'] }}<br><div style="font: 8pt arial, sans-serif">{{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] - _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }}</div></td>
         <td rowspan="2"> {{ _table['PEERS'][_peer]['SLOTS'] }}</td>
