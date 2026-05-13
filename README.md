@@ -1,5 +1,7 @@
 ---
 ### COMPLETELY UNSUPPORTED SOFTWARE - DO NOT ASK FOR SUPPORT OR FEATURES ###
+
+the dashboard included in HBlink4 is supported
 ---
 
 **Socket-Based Reporting for HBlink**
